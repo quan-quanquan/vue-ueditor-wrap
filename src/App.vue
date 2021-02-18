@@ -1,8 +1,15 @@
 <template>
   <div id="app">
-    <div class="preview" v-html="msg"></div>
-    <vue-ueditor-wrap v-model="msg" :config="myConfig" @before-init="addCustomButtom" :key="1" editor-id="editor_one"></vue-ueditor-wrap>
-    <vue-ueditor-wrap v-model="msg" :config="myConfig" @before-init="addCustomDialog" :key="2" editorId="editor-two"></vue-ueditor-wrap>
+    <!-- <div class="preview" v-html="msg"></div> -->
+    <vue-ueditor-wrap 
+      v-model="msg" 
+      :config="myConfig" 
+      @before-init="customEditor"
+      @ready="editorReady" 
+      :key="1" 
+      editor-id="editor_one"
+    ></vue-ueditor-wrap>
+    <!-- <vue-ueditor-wrap v-model="msg" :config="myConfig" @before-init="addCustomDialog" :key="2" editorId="editor-two"></vue-ueditor-wrap> -->
   </div>
 </template>
 
@@ -21,18 +28,32 @@ export default {
   },
   data () {
     return {
-      msg: '',
+      editor: null,
+      msg: '<table><tbody><tr class="firstRow"><td width="471" valign="top"><table><tbody><tr><td>11</td><td>12</td></tr><tr><td>21</td><td>22</td></tr></tbody></table><br/></td><td width="471" valign="top"><br/></td></tr><tr><td width="471" valign="top"><br/></td><td width="471" valign="top"><br/></td></tr></tbody></table><p><br/></p>',
       myConfig: {
         autoHeightEnabled: false,
-        initialFrameHeight: 200,
-        initialFrameWidth: '100%',
+        initialFrameHeight: 500,
+        initialFrameWidth: 1000,
         UEDITOR_HOME_URL: '/UEditor/',
         serverUrl: 'http://35.201.165.105:8000/controller.php',
         enableAutoSave: true // 开启从草稿箱恢复功能需要手动设置固定的 editorId，否则组件会默认随机一个，如果页面刷新，下次渲染的时候 editorId 会重新随机，导致无法加载草稿箱数据
       }
     };
   },
+  watch: {
+    msg() {
+      console.log(this.msg)
+    }
+  },
   methods: {
+    editorReady(instance) {
+      this.editor = instance
+      this.addTable()
+    },
+    customEditor(editorId) {
+      this.addCustomButtom(editorId)
+      this.addCustomDialog(editorId)
+    },
     // 添加自定义按钮
     addCustomButtom (editorId) {
       window.UE.registerUI('test-button', function (editor, uiName) {
@@ -122,6 +143,14 @@ export default {
 
         return btn;
       }, 0 /* 指定添加到工具栏上的那个位置，默认时追加到最后 */, editorId /* 指定这个UI是哪个编辑器实例上的，默认是页面上所有的编辑器都会添加这个按钮 */);
+    },
+    addTable() {
+      // this.editor.focus()
+      this.editor.execCommand('inserttable', {
+        numRows: 2,
+        numCols: 2,
+        border: 1
+      })
     }
   }
 };
@@ -130,6 +159,9 @@ export default {
 <style>
 .preview{
   min-height: 200px;
-  width: 100%;
+  width: 100%;  
+}
+#app {
+  padding: 24px 48px;
 }
 </style>
