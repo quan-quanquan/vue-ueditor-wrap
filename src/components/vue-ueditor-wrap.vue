@@ -160,7 +160,7 @@ export default {
           window['$loadEnv'] = new LoadEvent();
           // 如果在其他地方只引用ueditor.all.min.js，在加载ueditor.config.js之后仍需要重新加载ueditor.all.min.js，所以必须确保ueditor.config.js已加载
           this._loadConfig().then(() => this._loadCore()).then(() => {
-            installImgDragPlugin()
+            // installImgDragPlugin()
             resolve();
             window['$loadEnv'].emit('scriptsLoaded');
           });
