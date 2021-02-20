@@ -47,9 +47,9 @@ export default {
     };
   },
   watch: {
-    msg() {
-      console.log(this.msg)
-    }
+    // msg() {
+    //   console.log(this.msg)
+    // }
   },
   methods: {
     editorReady(instance) {
