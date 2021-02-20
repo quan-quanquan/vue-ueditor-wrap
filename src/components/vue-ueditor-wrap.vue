@@ -192,7 +192,7 @@ export default {
         }
         let coreScript = document.createElement('script');
         coreScript.type = 'text/javascript';
-        coreScript.src = this.mixedConfig.UEDITOR_HOME_URL + 'ueditor.all.min.js';
+        coreScript.src = this.mixedConfig.UEDITOR_HOME_URL + 'ueditor.all.js';
         document.getElementsByTagName('head')[0].appendChild(coreScript);
         coreScript.onload = function () {
           if (window.UE && window.UE.getEditor) {

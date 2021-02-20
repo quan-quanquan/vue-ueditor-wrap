@@ -1,11 +1,17 @@
 <template>
   <div id="app">
     <!-- <div class="preview" v-html="msg"></div> -->
-    <vue-ueditor-wrap 
+    <!-- <vue-ueditor-wrap 
       v-model="msg" 
       :config="myConfig" 
       @before-init="customEditor"
       @ready="editorReady" 
+      :key="1" 
+      editor-id="editor_one"
+    ></vue-ueditor-wrap> -->
+    <vue-ueditor-wrap 
+      v-model="msg" 
+      :config="myConfig"
       :key="1" 
       editor-id="editor_one"
     ></vue-ueditor-wrap>
@@ -14,13 +20,13 @@
 </template>
 
 <script>
-// import VueUeditorWrap from './components/vue-ueditor-wrap.vue';
+import VueUeditorWrap from './components/vue-ueditor-wrap.vue';
 
 // 检测构建之后vue-ueditor-wrap.js的可用性：
 
 // import VueUeditorWrap from '../lib/vue-ueditor-wrap.min.js'; // ES6 Module
 // const VueUeditorWrap = require('../lib/vue-ueditor-wrap.min.js'); // CommonJS
-const VueUeditorWrap = window.VueUeditorWrap; // 全局变量，通过 script 标签引入
+// const VueUeditorWrap = window.VueUeditorWrap; // 全局变量，通过 script 标签引入
 
 export default {
   components: {
@@ -29,7 +35,7 @@ export default {
   data () {
     return {
       editor: null,
-      msg: '<table><tbody><tr class="firstRow"><td width="471" valign="top"><table><tbody><tr><td>11</td><td>12</td></tr><tr><td>21</td><td>22</td></tr></tbody></table><br/></td><td width="471" valign="top"><br/></td></tr><tr><td width="471" valign="top"><br/></td><td width="471" valign="top"><br/></td></tr></tbody></table><p><br/></p>',
+      msg: '<img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=880009540,3557843296&fm=26&gp=0.jpg" />',
       myConfig: {
         autoHeightEnabled: false,
         initialFrameHeight: 500,
@@ -49,6 +55,7 @@ export default {
     editorReady(instance) {
       this.editor = instance
       this.addTable()
+      this.onSelectionChange()
     },
     customEditor(editorId) {
       this.addCustomButtom(editorId)
@@ -150,6 +157,11 @@ export default {
         numRows: 2,
         numCols: 2,
         border: 1
+      })
+    },
+    onSelectionChange() {
+      this.editor.addListener('selectionchange', function() {
+        console.log(arguments)
       })
     }
   }
